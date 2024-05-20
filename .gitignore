@@ -1,4 +1,5 @@
 .env
 node_modules
 
-# // npx eslint . -c eslint.json
+# npx eslint . -c .eslintrc.json
+# npx eslint src --fix
