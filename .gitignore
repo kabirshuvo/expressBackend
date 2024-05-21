@@ -1,5 +1,6 @@
 .env
 node_modules
+dist
 
 # npx eslint . -c .eslintrc.json
 # npx eslint src --fix
