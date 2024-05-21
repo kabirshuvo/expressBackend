@@ -1,8 +1,8 @@
-interface Orders {
+interface orderInterface {
   email: string;
   productId: string;
   price: number;
   quantity: number;
 }
 
-export default Orders;
+export default orderInterface;
