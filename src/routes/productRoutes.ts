@@ -12,10 +12,9 @@ router.get('/search', ProductController.searchProducts);
 
 // order routes
 
-router.post('/create-order', OrderController.createOrder);
+router.post('/', OrderController.createOrder);
 router.get('/', OrderController.getAllOrders);
 router.get('/order/:id', OrderController.getOrder);
-router.get('/orders', OrderController.getAllOrders);
 router.put('/order/:id', OrderController.updateOrder);
 router.delete('/order/:id', OrderController.deleteOrder);
 

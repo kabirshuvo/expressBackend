@@ -1,22 +1,51 @@
 import { Request, Response } from 'express';
 import OrderService from '../modules/orders/orderservices';
+import ProductModel from '../modules/products/models/productModel';
 
 const OrderController = {
   async createOrder(req: Request, res: Response) {
     try {
-      const newOrder = await OrderService.createOrder(req.body);
+      const { productId, quantity } = req.body;
+
+      // Retrieving the product details
+      const product = await ProductModel.findById(productId);
+      if (!product) {
+        return res
+          .status(404)
+          .json({ success: false, message: 'Product not found' });
+      }
+
+      // Checking if the ordered quantity exceeds available quantity
+      if (quantity > product.inventory.quantity) {
+        return res
+          .status(400)
+          .json({ success: false, message: 'Insufficient stock' });
+      }
+
+      // Subtracting the ordered quantity from available quantity
+      const updatedQuantity = product.inventory.quantity - quantity;
+
+      // Update the product's inventory
+      const updatedProduct = await ProductModel.findByIdAndUpdate(
+        productId,
+        {
+          'inventory.quantity': updatedQuantity,
+          'inventory.inStock': updatedQuantity > 0,
+        },
+        { new: true },
+      );
+
       res.status(201).json({
         success: true,
-        message: 'Order created successfully!',
-        data: newOrder,
+        message: 'Order created successfully',
+        data: updatedProduct,
       });
     } catch (error) {
-      const err: Error = error as Error;
+      const err = error as Error;
       console.error('Error:', err.message);
       res.status(500).json({
         success: false,
-        message: 'Error creating order',
-        error: err.message,
+        message: `Error creating order: ${err.message}`,
       });
     }
   },
@@ -56,24 +85,6 @@ const OrderController = {
       res.status(500).json({
         success: false,
         message: 'Error getting order',
-        error: err.message,
-      });
-    }
-  },
-
-  async getAllOrders(req: Request, res: Response) {
-    try {
-      const orders = await OrderService.getAllOrders();
-      res.status(200).json({
-        success: true,
-        data: orders,
-      });
-    } catch (error) {
-      const err: Error = error as Error;
-      console.error('Error:', err.message);
-      res.status(500).json({
-        success: false,
-        message: 'Error getting all orders',
         error: err.message,
       });
     }
