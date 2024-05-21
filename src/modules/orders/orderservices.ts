@@ -1,6 +1,6 @@
 import OrderModel from './ordermodels';
 
-import { OrderInterface } from './orderinterface';
+import { OrderInterface } from './orderInterface';
 import ProductModel from '../products/models/productModel';
 
 const OrderService = {

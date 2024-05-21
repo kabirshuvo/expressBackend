@@ -1,5 +1,5 @@
 import mongoose, { Model } from 'mongoose';
-import { OrderInterface } from './orderinterface';
+import { OrderInterface } from './orderInterface';
 import orderSchema from './orderschema';
 
 const OrderModel: Model<OrderInterface> = mongoose.model('Order', orderSchema);

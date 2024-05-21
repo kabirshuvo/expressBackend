@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { OrderInterface } from './orderinterface';
+import { OrderInterface } from './orderInterface';
 
 const orderSchema = new Schema<OrderInterface>(
   {
