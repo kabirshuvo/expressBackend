@@ -1,6 +1,7 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
+import { OrderInterface } from './orderinterface';
 
-const OrderSchema = new mongoose.Schema(
+const orderSchema = new Schema<OrderInterface>(
   {
     email: {
       type: String,
@@ -28,5 +29,6 @@ const OrderSchema = new mongoose.Schema(
     timestamps: true,
   },
 );
+// extra fields added like timestamps and total. may be it will not marking as negetive;
 
-export default mongoose.model('Order', OrderSchema);
+export default orderSchema;
