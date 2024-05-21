@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import OrderService from '../modules/orders/orderservices';
 import ProductModel from '../modules/products/models/productModel';
+import OrderModel from '../modules/orders/ordermodels';
 
 const OrderController = {
   async createOrder(req: Request, res: Response) {
@@ -25,8 +26,8 @@ const OrderController = {
       // Subtracting the ordered quantity from available quantity
       const updatedQuantity = product.inventory.quantity - quantity;
 
-      // Update the product's inventory
-      const updatedProduct = await ProductModel.findByIdAndUpdate(
+      // to Update the product's inventory
+      await ProductModel.findByIdAndUpdate(
         productId,
         {
           'inventory.quantity': updatedQuantity,
@@ -35,10 +36,21 @@ const OrderController = {
         { new: true },
       );
 
+      // Creating  a new order document because of : when I'm Subtracting and updating the quantity then my data was not storing in ordercollection
+      // so I created the newOrder here; and I'm finding the solution.
+      const newOrder = await OrderModel.create({
+        productId,
+        quantity,
+        price: product.price,
+        total: product.price * quantity,
+        email: req.body.email,
+      });
+
+      // Respond with the created order data
       res.status(201).json({
         success: true,
         message: 'Order created successfully',
-        data: updatedProduct,
+        data: newOrder,
       });
     } catch (error) {
       const err = error as Error;
