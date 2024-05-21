@@ -99,6 +99,42 @@ const ProductController = {
       });
     }
   },
+
+  async searchProducts(req: Request, res: Response) {
+    try {
+      const query = req.query;
+      const products = await ProductService.searchProducts(query);
+      res.status(200).json({
+        success: true,
+        data: products,
+      });
+    } catch (error) {
+      const err: Error = error as Error;
+      console.error('Error:', err.message);
+      res.status(500).json({
+        success: false,
+        message: 'Error searching products',
+        error: err.message,
+      });
+    }
+  },
+  async getAllProducts(req: Request, res: Response) {
+    try {
+      const products = await ProductService.getAllProducts();
+      res.status(200).json({
+        success: true,
+        data: products,
+      });
+    } catch (error) {
+      const err: Error = error as Error;
+      console.error('Error:', err.message);
+      res.status(500).json({
+        success: false,
+        message: 'Error getting all products',
+        error: err.message,
+      });
+    }
+  },
 };
 
 export default ProductController;

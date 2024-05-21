@@ -1,5 +1,6 @@
 import ProductModel from '../models/productModel';
 import ProductInterface from '../interfaces/productInteface';
+import { ProductFilter, ProductQuery } from '../interfaces/quiryInteface';
 
 const ProductService = {
   async createProduct(
@@ -12,7 +13,14 @@ const ProductService = {
       throw new Error('Error creating product');
     }
   },
-
+  async getAllProducts(): Promise<ProductInterface[]> {
+    try {
+      const products = await ProductModel.find({});
+      return products;
+    } catch (error) {
+      throw new Error('Error getting all products');
+    }
+  },
   async getProduct(productId: string): Promise<ProductInterface | null> {
     try {
       const product = await ProductModel.findById(productId);
@@ -44,6 +52,22 @@ const ProductService = {
       return deletedProduct;
     } catch (error) {
       throw new Error('Error deleting product');
+    }
+  },
+
+  async searchProducts(query: ProductQuery): Promise<ProductInterface[]> {
+    try {
+      const filter: ProductFilter = {};
+      if (query.name) filter.name = { $regex: query.name, $options: 'i' };
+      if (query.category)
+        filter.category = { $regex: query.category, $options: 'i' };
+      if (query.price) filter.price = { $lte: Number(query.price) };
+      if (query.tags) filter.tags = { $in: query.tags.split(',') };
+
+      const products = await ProductModel.find(filter);
+      return products;
+    } catch (error) {
+      throw new Error('Error searching products');
     }
   },
 };
