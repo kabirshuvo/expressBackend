@@ -2,11 +2,22 @@ import { Request, Response } from 'express';
 import OrderService from '../modules/orders/orderservices';
 import ProductModel from '../modules/products/models/productModel';
 import OrderModel from '../modules/orders/ordermodels';
+import { createOrderValidationSchema } from '../schemas/orderValidationSchema';
 
 const OrderController = {
   async createOrder(req: Request, res: Response) {
     try {
-      const { productId, quantity } = req.body;
+      // Validate the request body
+      const result = createOrderValidationSchema.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({
+          success: false,
+          message: 'Validation failed',
+          errors: result.error.errors,
+        });
+      }
+
+      const { productId, quantity, email, price } = result.data;
 
       // Retrieving the product details
       const product = await ProductModel.findById(productId);
@@ -26,7 +37,7 @@ const OrderController = {
       // Subtracting the ordered quantity from available quantity
       const updatedQuantity = product.inventory.quantity - quantity;
 
-      // to Update the product's inventory
+      // Update the product's inventory
       await ProductModel.findByIdAndUpdate(
         productId,
         {
@@ -36,14 +47,13 @@ const OrderController = {
         { new: true },
       );
 
-      // Creating  a new order document because of : when I'm Subtracting and updating the quantity then my data was not storing in ordercollection
-      // so I created the newOrder here; and I'm finding the solution.
+      // Create a new order document
       const newOrder = await OrderModel.create({
+        email,
         productId,
+        price,
         quantity,
-        price: product.price,
-        total: product.price * quantity,
-        email: req.body.email,
+        total: price * quantity, // Calculate the total price
       });
 
       // Respond with the created order data

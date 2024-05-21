@@ -1,17 +1,29 @@
 import { Request, Response } from 'express';
 import ProductService from '../modules/products/services/ProductServices';
+import { createProductValidationSchema } from '../schemas/productValidationSchema';
 
 const ProductController = {
   async createProduct(req: Request, res: Response) {
     try {
-      const newProduct = await ProductService.createProduct(req.body);
+      // Validate the request body
+      const result = createProductValidationSchema.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({
+          success: false,
+          message: 'Validation failed',
+          errors: result.error.errors,
+        });
+      }
+
+      // Use the validated data
+      const newProduct = await ProductService.createProduct(result.data);
       res.status(201).json({
         success: true,
         message: 'Product created successfully!',
         data: newProduct,
       });
     } catch (error) {
-      const err: Error = error as Error;
+      const err = error as Error;
       console.error('Error:', err.message);
       res.status(500).json({
         success: false,
