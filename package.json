@@ -4,7 +4,8 @@
   "description": "**Objective:** Develop a Express application with TypeScript as the programming language, integrating MongoDB with Mongoose for effective data management. Ensure data integrity through validation using Joi/Zod.",
   "main": "index.js",
   "scripts": {
-    "start:prod": "node ./dist/server.js",
+    "start": "node ./dist/server.js",
+    "start:prod": "nodemon ./dist/server.js",
     "start:dev": "ts-node-dev --respawn --transpile-only src/app.ts",
     "build": "tsc",
     "lint": "eslint src --ignore-path .eslintignore --ext .ts",
@@ -25,6 +26,7 @@
     "globals": "^15.3.0",
     "mongodb": "^6.6.2",
     "mongoose": "^8.4.0",
+    "nodemon": "^3.1.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
