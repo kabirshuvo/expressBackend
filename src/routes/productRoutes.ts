@@ -1,15 +1,23 @@
 import express from 'express';
-import ProductController from '../controllers/ProductController';
+import { ProductController } from '../controllers/ProductController';
 import OrderController from '../controllers/OrderController';
 
 const router = express.Router();
 
-router.post('/create-product', ProductController.createProduct);
-router.get('/create-product/:id', ProductController.getProduct);
-router.put('/create-product/:id', ProductController.updateProduct);
-router.delete('/create-product/:id', ProductController.deleteProduct);
-router.get('/all-products', ProductController.getAllProducts);
-router.get('/search', ProductController.searchProducts);
+const getAllProduct = ProductController.getAllProductsFromDatabase;
+const createANewProduct = ProductController.createProductInDatabase;
+const getSingleProduct = ProductController.getProductFromDatabase;
+const updateProduct = ProductController.updateProductInDatabase;
+const deleteAProduct = ProductController.deleteProductFromDatabase;
+const searchProduct = ProductController.searchProductsInDatabase;
+
+// Product routes
+router.get('/', getAllProduct);
+router.post('/create-product', createANewProduct);
+router.get('/create-product/:id', getSingleProduct);
+router.put('/create-product/:id', updateProduct);
+router.delete('/create-product/:id', deleteAProduct);
+router.get('/search', searchProduct);
 
 // order routes
 

@@ -4,3 +4,4 @@ dist
 
 # npx eslint . -c .eslintrc.json
 # npx eslint src --fix
+.vercel
