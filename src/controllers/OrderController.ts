@@ -1,40 +1,39 @@
 import { Request, Response } from 'express';
 import { OrderService } from '../modules/orders/orderservices';
-import { createOrderValidationSchema } from '../schemas/orderValidationSchema';
-
+// import { createOrderValidationSchema } from '../schemas/orderValidationSchema';
+// import { OrderInterface } from '../modules/orders/orderInterface';
 interface CustomError extends Error {
   statusCode?: number;
 }
 
 // Create Order
-const createOrderInDatabase = async (
-  req: Request,
-  res: Response,
-): Promise<void> => {
+
+export const createOrderInDatabase = async (req: Request, res: Response) => {
   try {
     // Validate the request body
-    const result = createOrderValidationSchema.safeParse(req.body);
-    if (!result.success) {
-      res.status(400).json({
-        success: false,
-        message: 'Validation failed',
-        errors: result.error.errors,
-      });
-      return;
-    }
+    // const result = createOrderValidationSchema.safeParse(req.body);
+    // if (!result.success) {
+    //   res.status(400).json({
+    //     success: false,
+    //     message: 'Validation failed',
+    //     errors: result.error.errors,
+    //   });
+    //   return;
+    // }
+    // // Use the validated data
+    // const orderData: OrderInterface = {
+    //   email: result.data.email,
+    //   // If productId is a string, convert it to ObjectId
+    //   productId: new Types.ObjectId(result.data.productId),
+    //   price: result.data.price,
+    //   quantity: result.data.quantity,
+    //   total: 0, // Initialize total to 0, it will be calculated in the OrderService
+    //   createdAt: new Date(), // Set createdAt timestamp
+    //   updatedAt: new Date(), // Set updatedAt timestamp
+    // };
 
-    // Use the validated data
-    // getting error at result.data
-    //     Argument of type '{ email: string; productId: string; price: number; quantity: number; }' is not assignable to parameter of type 'OrderInterface'.
-    //   Type '{ email: string; productId: string; price: number; quantity: number; }' is missing the following properties from type 'OrderInterface': total, createdAt, updatedAt, $assertPopulated, and 50 more.ts(2345)
-    // const result: SafeParseSuccess<{
-    //     email: string;
-    //     productId: string;
-    //     price: number;
-    //     quantity: number;
-    // }>
-    // No quick fixes available
-    const newOrder = await OrderService.createOrder(result.data);
+    const result = req.body;
+    const newOrder = await OrderService.createOrder(result);
     res.status(201).json({
       success: true,
       message: 'Order created successfully!',
