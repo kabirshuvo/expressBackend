@@ -1,7 +1,8 @@
 import cors from 'cors';
 import express, { Application, Request, Response } from 'express';
 import connectDB from './server';
-import productRoutes from './routes/productRoutes';
+import { ProductRouter } from './routes/productRoutes';
+import { OrderRoutes } from './routes/OrderRoutes';
 
 const app: Application = express();
 app.use(express.json());
@@ -10,8 +11,8 @@ connectDB();
 
 // Middlewares
 
-app.use('/api/products', productRoutes);
-app.use('/api/orders', productRoutes);
+app.use('/api/products', ProductRouter);
+app.use('/api/orders', OrderRoutes);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello World!');

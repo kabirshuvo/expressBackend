@@ -1,6 +1,5 @@
 import express from 'express';
 import { ProductController } from '../controllers/ProductController';
-import OrderController from '../controllers/OrderController';
 
 const router = express.Router();
 
@@ -19,11 +18,4 @@ router.put('/create-product/:id', updateProduct);
 router.delete('/create-product/:id', deleteAProduct);
 router.get('/search', searchProduct);
 
-// order routes
-
-router.post('/', OrderController.createOrder);
-router.get('/', OrderController.getAllOrders);
-router.get('/order/:id', OrderController.getOrder);
-router.put('/order/:id', OrderController.updateOrder);
-router.delete('/order/:id', OrderController.deleteOrder);
-export default router;
+export const ProductRouter = router;
