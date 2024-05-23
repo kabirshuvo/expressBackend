@@ -10,28 +10,6 @@ interface CustomError extends Error {
 
 export const createOrderInDatabase = async (req: Request, res: Response) => {
   try {
-    // Validate the request body
-    // const result = createOrderValidationSchema.safeParse(req.body);
-    // if (!result.success) {
-    //   res.status(400).json({
-    //     success: false,
-    //     message: 'Validation failed',
-    //     errors: result.error.errors,
-    //   });
-    //   return;
-    // }
-    // // Use the validated data
-    // const orderData: OrderInterface = {
-    //   email: result.data.email,
-    //   // If productId is a string, convert it to ObjectId
-    //   productId: new Types.ObjectId(result.data.productId),
-    //   price: result.data.price,
-    //   quantity: result.data.quantity,
-    //   total: 0, // Initialize total to 0, it will be calculated in the OrderService
-    //   createdAt: new Date(), // Set createdAt timestamp
-    //   updatedAt: new Date(), // Set updatedAt timestamp
-    // };
-
     const result = req.body;
     const newOrder = await OrderService.createOrder(result);
     res.status(201).json({

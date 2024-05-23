@@ -9,7 +9,6 @@ const orderSchema = new Schema<OrderInterface>(
     },
     productId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Product',
       required: true,
     },
     price: {

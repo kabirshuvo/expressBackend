@@ -22,7 +22,7 @@ This project is a RESTful API built with Express.js, TypeScript, and MongoDB. It
 - TypeScript
 - MongoDB
 - Mongoose
-- Joi/Zod (for data validation)
+- Zod (for data validation)
 - Cors (for enabling Cross-Origin Resource Sharing)
 - Dotenv (for environment variables)
 - ESLint and Prettier (for code linting and formatting)
@@ -41,7 +41,7 @@ Before running the application, ensure you have the following installed:
 1. Clone this repository:
 
    ```bash
-   git clone <repository-url>
+   git clone <https://github.com/kabirshuvo/expressBackend.git>
    ```
 
 ### API Endpoints

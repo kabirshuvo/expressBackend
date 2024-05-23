@@ -1,6 +1,6 @@
-import { Document, Types } from 'mongoose';
+import { Types } from 'mongoose';
 
-export interface OrderInterface extends Document {
+export interface OrderInterface {
   email: string;
   productId?: Types.ObjectId;
   price: number;
